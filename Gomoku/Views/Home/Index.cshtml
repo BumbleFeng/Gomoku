@@ -1,0 +1,130 @@
+﻿@using Newtonsoft.Json;
+@model Gomoku.Models.Record
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/css/chess.css">
+}
+
+<h3 id="result-wrap">Gomoku</h3>
+<canvas id="chess" width="450px" height="450px"></canvas>
+<div class="btn-wrap">
+    <div id='sentebtn' class="sentebtn">
+        <span>Sente</span>
+    </div>
+    <div id='restart' class="restart">
+        <span>Restart</span>
+    </div>
+    <div id='regret' class="regret unable">
+        <span>Regret</span>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/chess.js"></script>
+    <script>
+        var over = false;
+        var sente = @Model.Sente.ToString().ToLower();
+        var move = @Model.Records.Count();
+        var records = @JsonConvert.SerializeObject(Model.Records);
+        var context = chess.getContext('2d');
+        context.strokeStyle = '#bfbfbf';
+        drawChessBoard();
+
+        if(sente){
+            sentebtn.className = "sentebtn";
+        }else{
+            sentebtn.className = "sentebtn unable";
+        }
+
+        if( move > 0)
+        {
+            for (var i = 0; i < move; i++) {
+                oneStep(records[i][0],records[i][1],i%2 == 0);
+            }
+            if( move > 1)
+                regret.className = "regret";
+            winner();
+        }
+
+        chess.onclick = function(e){
+            if(over)
+                return;
+            regret.className = "regret";
+            var x = e.offsetX;
+            var y = e.offsetY;
+            var i = Math.floor(x / 30);
+            var j = Math.floor(y / 30);
+            $.ajax({
+                type : "POST",
+                url : "/home/move",
+                data : {
+                    i : i,
+                    j : j
+                },
+                success : function(result) {
+                    if( result == "exist" )
+                        return;
+                    records[move] = new Array(i, j);
+                    oneStep(i, j, move%2 == 0);
+                    move++;
+                    if (result == "" ){
+                        winner();
+                        return;
+                    }
+                    var c = result.split(",");
+                    records[move] = new Array(c[0], c[1]);
+                    oneStep(c[0], c[1], move%2 == 0);
+                    move++;
+                    winner();
+                }
+            });
+        }
+
+        function winner(){
+            $.ajax({
+                type : "Get",
+                url : "/home/winner",
+                success : function(result) {
+                    if( result != ""){
+                        over = true;
+                        alert(result);
+                    }
+                }
+            });
+        }
+
+        sentebtn.onclick = function(e){
+            $.ajax({
+                type : "Get",
+                url : "/home/sente",
+                success : function(result) {
+                    window.location.reload();
+                }
+            });
+        }
+
+        restart.onclick = function(e){
+            $.ajax({
+                type : "Get",
+                url : "/home/restart",
+                success : function(result) {
+                    window.location.reload();
+                }
+            });
+        }
+
+        regret.onclick = function(e){
+            over = false;
+            $.ajax({
+                type : "Get",
+                url : "/home/regret",
+                success : function(result) {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+}

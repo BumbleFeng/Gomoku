@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{42EA8B9E-0D1C-4CFC-BFAB-611FF8B3C4B1}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gomoku/wwwroot/js/chess.js">
+    <Files>
+      <File FileName="Gomoku/Views/Home/Index.cshtml" Line="48" Column="30" />
+      <File FileName="Gomoku/wwwroot/css/chess.css" Line="2" Column="8" />
+      <File FileName="Gomoku/Views/Shared/_Layout.cshtml" Line="52" Column="45" />
+      <File FileName="Gomoku/wwwroot/css/site.css" Line="31" Column="30" />
+      <File FileName="Gomoku/wwwroot/js/chess.js" Line="17" Column="5" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Gomoku PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
